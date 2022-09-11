@@ -128,8 +128,12 @@ module Textpow
         puts "Ignored utf8 regex error #{$!}"
         /INVALID_UTF8/
       else
-        raise e
+        # raise e
+        puts e.message
       end
+
+      # todo!
+      Regexp.new("123ABC!@")
     end
 
     # register in global syntax list -> can be found by include
@@ -247,7 +251,7 @@ module Textpow
       # in spox-textpow this is \\g in 1.9 !?
       regstring.gsub!( /\\k<(.*?)>/ ) { |s| match[$1.to_sym] }
       if Textpow::RUBY_19
-        Regexp.new( regstring ).match( string, position )
+        parse_regex_with_invalid_chars( regstring ).match( string, position )
       else
         Oniguruma::ORegexp.new( regstring ).match( string, position )
       end
