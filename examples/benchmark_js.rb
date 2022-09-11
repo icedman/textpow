@@ -3,9 +3,12 @@
 $LOAD_PATH.unshift 'lib'
 require 'textpow'
 
-syntax = Textpow.syntax('javascript')
-text = File.read('examples/jquery.js')
-processor = Textpow::RecordingProcessor.new
+# syntax = Textpow.syntax('javascript')
+# text = File.read('examples/jquery.js')
+syntax = Textpow.syntax('c')
+text = File.read('examples/tinywl.c')
+# processor = Textpow::RecordingProcessor.new
+processor = Textpow::DebugProcessor.new
 
 start = Time.now.to_f
 (ARGV[0] || 1).to_i.times{ syntax.parse(text,  processor) }

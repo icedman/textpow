@@ -3,6 +3,7 @@ require 'textpow/syntax'
 require 'textpow/debug_processor'
 require 'textpow/recording_processor'
 require 'textpow/score_manager'
+require 'textpow/extensions'
 require 'textpow/version'
 
 module Textpow
@@ -20,6 +21,22 @@ module Textpow
     else
       @@syntax[key] = uncached_syntax(syntax_name)
     end
+  end
+
+  def self.syntax_from_filename(filename)
+    gm = Extension.new.grammar_from_filepath(filename)
+    if gm
+      key = gm.language
+      if @@syntax.has_key?(key)
+        @@syntax[key]
+      else
+        @@syntax[key] = SyntaxNode.load(gm.path)
+      end
+    end
+  end
+
+  def self.load_extensions(path)
+    Extension.new.load_extensions(path)
   end
 
 private

@@ -84,6 +84,11 @@ module Textpow
       processor
     end
 
+    def parse_line_by_line(stack, line, processor = RecordingProcessor.new)
+      parse_line stack, line, processor
+      stack.last
+    end
+
   protected
 
     def parse_and_store_syntax_info(table)
@@ -139,6 +144,9 @@ module Textpow
       when /(\.tmSyntax|\.plist)$/
         require 'plist'
         Plist::parse_xml(file)
+      when /(\.json)$/
+        require 'json'
+        JSON.load_file(file)
       else
         YAML.load_file(file)
       end
